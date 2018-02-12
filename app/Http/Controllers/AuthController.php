@@ -13,16 +13,12 @@ use App\User;
 
 class AuthController extends Controller
 {
-
-	public function index()
-	{	
-
-
-	}
+	
 	public function signup(Request $request)
 		{
 			return view ('signup_form');
 		}
+	
 	public function signme(Request $request)
 		{		
 				$validator = Validator::make($request->all(), 
