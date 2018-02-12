@@ -45,8 +45,9 @@ class AuthController extends Controller
     				$user->email=$request->input('email');
     				$user->password=Hash::make($request->input('password'));
     				$user->save();
+			return redirect('signup')->with('status', 'Data Entered Successfully!');
  	       		}
 
-	    return redirect('signup')->with('status', 'Data Entered Successfully!');
+	    
  	     }
 }
