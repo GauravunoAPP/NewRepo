@@ -17,7 +17,17 @@ Route::get('/', function () {
 
 Route::get('signup','AuthController@signup');
 Route::post('signme','AuthController@signme');
-Route::post('user/profile', function () 
+Route::get('/','AuthController@index');
+Route::post('login','AuthController@login');
+Route::get('logout','AuthController@logout');
+
+Route::group(['Middleware'=>'Auth'],function() 
 {
-    return redirect('signup')->with('status', 'SignedUp Successfully!');
+	Route::get('userprofile', function () {
+        return view('userprofile');
+    });
+    
+
+//Route::get('userprofile','AuthController@userprofile');
 });
+
