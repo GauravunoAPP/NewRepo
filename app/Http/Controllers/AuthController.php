@@ -6,19 +6,25 @@ use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Session;
 use Illuminate\Validation\Rule;
+use App\Http\Controllers\input;
 use Validator;
 use view;
 use Hash;
+use Auth;
 use App\User;
 
 class AuthController extends Controller
 {
-	
+	public function index()
+		{
+			return view('login');
+		}
+
 	public function signup(Request $request)
 		{
 			return view ('signup_form');
 		}
-	
+
 	public function signme(Request $request)
 		{		
 				$validator = Validator::make($request->all(), 
@@ -41,9 +47,40 @@ class AuthController extends Controller
     				$user->email=$request->input('email');
     				$user->password=Hash::make($request->input('password'));
     				$user->save();
-			return redirect('signup')->with('status', 'Data Entered Successfully!');
+    				return redirect('signup')->with('status', 'Data Entered Successfully!');
  	       		}
-
-	    
  	     }
-}
+
+ 	    public function userprofile()
+		{
+			
+ 	    }
+
+ 	public function login(Request $request)
+ 		{
+		
+		$validator = Validator::make($request->all(), 
+			[
+            	'email' => 'required', 
+            	'password' => 'required',
+        	]);
+
+        	if ($validator->fails())
+        		{
+            		return redirect('/') ->withErrors($validator)->withInput();
+        		}
+        	else
+        		{
+					$user = array('email' =>$request->input('email'),'password' =>$request->input('password'));
+
+					if (Auth::attempt($user)) 
+						{
+							return redirect('userprofile');
+						}
+					else
+							{
+								return redirect('/')->with('error','Provide valid Email and Psssword');
+							}
+					}
+		}
+}	
