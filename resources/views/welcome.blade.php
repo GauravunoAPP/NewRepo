@@ -68,7 +68,6 @@
     <body>
         <div class="flex-center position-ref full-height">
             <a href="signup" style="color: #fff; background-color: #5B31DB; padding: 15px; text-decoration: none; ">SignUp</a>
-            
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
@@ -93,6 +92,7 @@
                     <a href="https://github.com/laravel/laravel">GitHub</a>
                 </div>
             </div>
+            <a href="login" style="color: #fff; background-color: #5B31DB; padding: 15px; text-decoration: none; ">Login</a>
         </div>
     </body>
 </html>
