@@ -11,7 +11,7 @@
 |	
 */
 Route::get('/', function () {
-    return view('welcome');
+    return view('login');
 });
 
 
@@ -19,15 +19,12 @@ Route::get('signup','AuthController@signup');
 Route::post('signme','AuthController@signme');
 Route::get('/','AuthController@index');
 Route::post('login','AuthController@login');
-Route::get('logout','AuthController@logout');
 
-Route::group(['Middleware'=>'Auth'],function() 
+
+Route::group(['Middleware'=>'auth'],function() 
 {
-	Route::get('userprofile', function () {
-        return view('userprofile');
-    });
-    
+	Route::get('userprofile','AuthController@userprofile');
+    Route::get('logout','AuthController@logout'); 
 
-//Route::get('userprofile','AuthController@userprofile');
 });
-
+    
