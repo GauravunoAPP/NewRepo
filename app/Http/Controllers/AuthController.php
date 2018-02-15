@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Session;
+use Session;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\input;
 use Validator;
@@ -12,6 +12,7 @@ use view;
 use Hash;
 use Auth;
 use App\User;
+use Html;
 
 class AuthController extends Controller
 {
@@ -53,7 +54,14 @@ class AuthController extends Controller
 
  	    public function userprofile()
 		{
-			
+			if(Session::has('id') && Session::get('id') != '')
+			{
+    			return view('userprofile');
+			}
+			else
+			{
+				return redirect('/');
+			}
  	    }
 
  	public function login(Request $request)
@@ -75,12 +83,24 @@ class AuthController extends Controller
 
 					if (Auth::attempt($user)) 
 						{
+							$users = User::Select('email','name','id')->where('email','=',$request->input('email'))->first();
+							$request->session()->put('id',$users->id);
+							$request->session()->put('email',$users->email);
+							$request->session()->put('name',$users->name);
 							return redirect('userprofile');
 						}
 					else
 							{
-								return redirect('/')->with('error','Provide valid Email and Psssword');
+								return redirect('/')->with('error','Provide valid Email-ID and Password');
 							}
-					}
+					}	
+		}
+
+	public function logout(Request $request)
+		{
+
+			Auth::logout();
+			Session::flush();
+			return redirect('/');
 		}
 }	
